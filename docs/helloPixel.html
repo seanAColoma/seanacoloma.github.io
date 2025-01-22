@@ -1,0 +1,61 @@
+
+<canvas id = "canvas" width = 400 height = 400> </canvas>
+<script>
+//tell the canvas the context is webgl
+/** @type {WebGLRenderingContext} */
+var gl = canvas.getContext("webgl");
+
+//Vertex Shader - saved as a string literal
+var vshader = `
+void main() {
+    //centre of canvas
+    gl_Position = vec4(0.0, 0.0, 0.0, 1.0);
+    //size of point in pixels
+    gl_PointSize = 10.0;
+}`;
+
+//Fragment Shader - saved as a string literal
+var fshader = `
+precision mediump float;
+void main() {
+    gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+}`;
+
+//compile the vertex shader
+var vs = gl.createShader(gl.VERTEX_SHADER);
+gl.shaderSource(vs, vshader);
+gl.compileShader(vs);
+
+//compile the fragment shader
+var fs = gl.createShader(gl.FRAGMENT_SHADER);
+gl.shaderSource(fs, fshader);
+gl.compileShader(fs);
+
+//create the webgl program and use it
+var program = gl.createProgram();
+//attach the vertex shader to the program
+gl.attachShader(program, vs);
+//attach the fragment shader to the program
+gl.attachShader(program, fs);
+gl.linkProgram(program);
+gl.useProgram(program);
+
+//logs from shaders
+console.log('vertex shader: ', gl.getShaderInfoLog(vs) || 'OK');
+console.log('fragment shader: ', gl.getShaderInfoLog(fs) || 'OK');
+//logs from program
+console.log('program ', gl.getProgramInfoLog(program) || 'OK');
+
+//set clear color to black
+gl.clearColor(0.0, 0.0, 0.0, 1.0);
+//clear the canvas
+gl.clear(gl.COLOR_BUFFER_BIT);
+
+gl.drawArrays(
+    gl.POINTS,  //mode
+    0,          //starting point
+    1           //num of points
+);
+
+
+</script>

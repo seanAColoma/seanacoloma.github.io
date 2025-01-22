@@ -1,3 +1,4 @@
+/** @type {WebGLRenderingContext} */
 main();
 
 //
